@@ -5,4 +5,4 @@ block content
     const token = "!{token}";
     console.log("-------",token);
     console.log("on fait un postMessage de l'iframe vers la page parente")
-    window.top.postMessage(token, "*")
+    window.top.postMessage(`sso_session=${token}`, "*")

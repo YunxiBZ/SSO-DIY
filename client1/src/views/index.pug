@@ -50,3 +50,12 @@ html
 
   script(src="https://code.jquery.com/jquery-3.6.0.slim.min.js")
   script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js", integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p", crossorigin="anonymous")
+  script(type="text/javascript").
+    window.addEventListener("message", function(e) {
+      console.log("évenement reçu : ",e);
+      if (!e.data.startsWith("sso_session")) return;
+      document.cookie = e.data;
+      // Refresh the SSO iframes to display current SSO view
+      var iframes = document.querySelectorAll('.sso-gateway');
+      Array.from(iframes).forEach(iframe => iframe.src = iframe.src);
+    })
