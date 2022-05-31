@@ -21,6 +21,12 @@ app.use((req, res, next) => {
   const cookies = req.headers.cookie;
   console.log(cookies);
 
+  req.cookies = {};
+
+  if (!cookies) {
+    return next();
+  }
+
   const cookiesArray = cookies.split("; ");
   const parsedCookies = {};
 
@@ -46,6 +52,10 @@ app.get('/', function (req, res) {
   }
 });
 
+app.get("/api/session", function(req, res) {
+  res.render("session", { token: req.cookies.sso_session});
+});
+
 app.post("/api/session/login", function(req, res) {
   // Objectif: vérifier la validité | des identifiants | reçus
   // 1. récupérer les données envoyées en POST
@@ -59,7 +69,12 @@ app.post("/api/session/login", function(req, res) {
   }
   // 3. vérifier que le mot de passe reçu est bien celui attendu
   if (password === user.password) {
-    res.cookie("sso_session", email).send(200);
+    res.cookie("sso_session", email, {
+        sameSite: "none",
+        secure: true,
+    }) 
+    // .send(200);
+    .redirect("/api/session");
   } else {
     res.send(500);
   }
