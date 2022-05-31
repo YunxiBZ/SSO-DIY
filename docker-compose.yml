@@ -1,4 +1,3 @@
-
 version: "3"
 
 services:
@@ -15,8 +14,13 @@ services:
       - ./server/:/home/node/app
 
   # Quelques services (sites web) "clients" du SSO
-#   sso-client1:
-#     build: .
+  sso-client1:
+    build: client1
+    environment:
+      VIRTUAL_HOST: sso-client1.test
+      VIRTUAL_PORT: 3000
+    volumes:
+      - ./client1/:/home/node/app
 
   adminer:
     image: adminer:4.8.1
