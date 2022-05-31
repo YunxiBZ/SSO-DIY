@@ -1,20 +1,22 @@
+
 version: "3"
 
 services:
   # Service central et unique d'authentification  
   sso-server:
-    # image: node:18, build est pour aller voir un Dockerfile à créer un image
+    # image: node:18
     build: server
-    # ports: 
-    #   - "80:3000"
+    # ports:
+    #   - "5000:3000"
     environment:
       VIRTUAL_HOST: sso-server.test
       VIRTUAL_PORT: 3000
-
+    volumes:
+      - ./server/:/home/node/app
 
   # Quelques services (sites web) "clients" du SSO
-  # sso-client1:
-
+#   sso-client1:
+#     build: .
 
   adminer:
     image: adminer:4.8.1
@@ -32,4 +34,4 @@ services:
       - "80:80"
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
-    
+      - ./vhost.d:/etc/nginx/vhost.d
